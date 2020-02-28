@@ -45,7 +45,7 @@ public class SimpleList {
 	public void add(int x) {
 
 		if (count == list.length) {
-			list = Arrays.copyOf(list, (int) Math.round(list.length + list.length / 2));
+			list = Arrays.copyOf(list, (int) Math.floor(list.length + list.length / 2));
 		}
 
 		for (int i = list.length - 2; i >= 0; i--) {
@@ -91,7 +91,7 @@ public class SimpleList {
 
 		// Resize if too few items in list
 		if (count < 0.75 * (list.length) && list.length > 1) {
-			list = Arrays.copyOf(list, (int) Math.round(list.length * 0.75) + 1);
+			list = Arrays.copyOf(list, (int) Math.floor(list.length * 0.75));
 		}
 	}
 
@@ -153,7 +153,7 @@ public class SimpleList {
 	 */
 	public void append(int x) {
 		if (count == list.length) {
-			list = Arrays.copyOf(list, (int) Math.round(list.length + list.length / 2));
+			list = Arrays.copyOf(list, (int) Math.floor(list.length + list.length / 2));
 		}
 		list[count] = x;
 		count++;
