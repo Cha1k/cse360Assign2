@@ -9,6 +9,8 @@
 
 package cse360Assign2;
 
+import java.util.Arrays;
+
 /**
  * Class that creates an integer array of ARRAY_SIZE entries, and performs basic
  * list operations.
@@ -36,43 +38,46 @@ public class SimpleList {
 
 	/**
 	 * Adds an integer to index 0 of the list, shifts all other elements to the left
-	 * by one. Element in index 9 is overwritten.
+	 * by one. Resizes array on overflow.
 	 * 
 	 * @param x the integer to be added to the list.
 	 */
 	public void add(int x) {
 
-		for (int i = ARRAY_SIZE - 2; i >= 0; i--) {
+		if (count == list.length) {
+			list = Arrays.copyOf(list, (int) Math.round(list.length + list.length / 2));
+		}
+
+		for (int i = list.length - 2; i >= 0; i--) {
 			list[i + 1] = list[i];
 		}
 
 		list[0] = x;
 
-		// Adjust count with operations instead of recalculating.
-		if (count < ARRAY_SIZE) {
-			count++;
-		}
+		count++;
+
 	}
 
 	/**
 	 * Removes all instances of integer x from the list, shifting all following
-	 * elements to the left to fill in the void.
+	 * elements to the left to fill in the void. Resizes list if more than 25% of
+	 * list is empty
 	 * 
 	 * @param x the number to be removed from the list.
 	 */
 	public void remove(int x) {
-		for (int i = 0; i < ARRAY_SIZE; i++) {
+		for (int i = 0; i < list.length; i++) {
 
 			if (list[i] == x) {
 
-				for (int j = i; j < ARRAY_SIZE - 1; j++) {
+				for (int j = i; j < list.length - 1; j++) {
 
 					list[j] = list[j + 1];
 
 				}
 
 				// Set last value in array to 0 to clear data.
-				list[ARRAY_SIZE - 1] = 0;
+				list[list.length - 1] = 0;
 
 				// Adjust count during operations instead of recalculating.
 				count--;
@@ -81,6 +86,12 @@ public class SimpleList {
 				i = i - 1;
 
 			}
+
+		}
+
+		// Resize if too few items in list
+		if (count < 0.75 * (list.length) && list.length > 1) {
+			list = Arrays.copyOf(list, (int) Math.round(list.length * 0.75) + 1);
 		}
 	}
 
@@ -133,6 +144,46 @@ public class SimpleList {
 		}
 
 		return index;
+	}
+
+	/**
+	 * Adds the parameter to the end of the list, and resizes if list is full.
+	 * 
+	 * @param x the integer being added to the list.
+	 */
+	public void append(int x) {
+		if (count == list.length) {
+			list = Arrays.copyOf(list, (int) Math.round(list.length + list.length / 2));
+		}
+		list[count] = x;
+		count++;
+	}
+
+	/**
+	 * Returns the first element in the list.
+	 * 
+	 * @return the first element in the list.
+	 */
+	public int first() {
+		return list[0];
+	}
+
+	/**
+	 * Returns the last element in the list.
+	 * 
+	 * @return the last element in the list.
+	 */
+	public int last() {
+		return list[count - 1];
+	}
+
+	/**
+	 * Returns the size of the list.
+	 * 
+	 * @return the size of the list.
+	 */
+	public int size() {
+		return list.length;
 	}
 
 }
